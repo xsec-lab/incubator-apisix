@@ -21,7 +21,7 @@ apisix:
   enable_debug: false
   enable_ipv6: true
   config_center: etcd             # etcd: use etcd to store the config value
-                                  # yaml: fetch the config value from local yaml file `/your_path/conf/apisix.yaml`
+  # yaml: fetch the config value from local yaml file `/your_path/conf/apisix.yaml`
   # allow_admin:                  # http://nginx.org/en/docs/http/ngx_http_access_module.html#allow
   #   - 127.0.0.0/24              # If we don't set any IP list, then any IP access is allowed by default.
   #   - "::/64"
@@ -32,7 +32,7 @@ apisix:
     - 'unix:'
   router:
     http: 'radixtree_uri'         # radixtree_uri: match route by uri(base on radixtree)
-                                  # radixtree_host_uri: match route by host + uri(base on radixtree)
+    # radixtree_host_uri: match route by host + uri(base on radixtree)
     ssl: 'radixtree_sni'          # radixtree_sni: match route by SNI(base on radixtree)
   # stream_proxy:                 # TCP/UDP proxy
   #   tcp:                        # TCP proxy port list
@@ -71,6 +71,31 @@ etcd:
   prefix: "/apisix"               # apisix configurations prefix
   timeout: 3                      # 3 seconds
 
+
+redis:
+  host: "127.0.0.1"
+  port: 6379
+  password: "password"
+  timeout: 1000
+
+api:
+  mobile_active: "http://127.0.0.1/mobile"
+  wbxml_api: "http://127.0.0.1:5000/api/wbxml/"
+  notice_api: "http://127.0.0.1:5000/api/send/"
+  zero_trust_api: "http://127.0.0.1:5000/api/zero_trust/"
+  opa_host: "http://127.0.0.1:8181"
+  opa_path: "/v1/data/rep1"
+
+prefix:
+  user_prefix: "exchange_user_"
+  account_prefix: "exchange_account_"
+  code_prefix: "exchange_code_"
+  device_prefix: "exchange_device_"
+  device_info: "exchange_info_"
+  device_name: "exchange_device_name"
+  ews_prefix: "exchange_ews_"
+  ews_ua_prefix: "exchange_ews_ua_"
+
 plugins:                          # plugin list
   - example-plugin
   - limit-req
@@ -89,6 +114,9 @@ plugins:                          # plugin list
   - proxy-rewrite
   - redirect
   - response-rewrite
+  - exchange-owa
+  - exchange-ews
+  - exchange-mobil
 
 stream_plugins:
   - mqtt-proxy
