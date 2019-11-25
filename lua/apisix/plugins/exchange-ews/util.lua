@@ -4,6 +4,7 @@
 --- DateTime: 2019/11/10 22:11
 ---
 
+local ngx = ngx
 local http = require("resty.http")
 local core = require("apisix.core")
 local redis = require("apisix.core.redis")
@@ -27,6 +28,18 @@ local function get_client_type(ctx)
         ua = table_ua[1]
     end
 
+    return ua
+end
+
+-- 在nginx的配置文件中调用
+local function get_client_type1()
+    local headers = ngx.req.get_headers()
+    local user_agent = headers["user-agent"]
+    local table_ua = core.strings.split(user_agent, "/")
+
+    if #table_ua > 0 then
+        ua = table_ua[1]
+    end
     return ua
 end
 
@@ -129,6 +142,7 @@ end
 local _M = {
     get_user_srcip = get_user_srcip,
     get_client_type = get_client_type,
+    get_client_type1 = get_client_type1,
     get_username = get_username,
     get_username_from_mail = get_username_from_mail,
     check_crack = check_crack,
