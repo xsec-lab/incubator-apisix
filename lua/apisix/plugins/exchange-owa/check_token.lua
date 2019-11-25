@@ -18,7 +18,7 @@ local function get_name_from_email(email)
 end
 
 -- 验证token
-local function chk_token(email, token)
+local function check_token(email, token)
     local username = get_name_from_email(email)
     local result = false
 
@@ -68,7 +68,7 @@ end
 
 local _M = {
     get_name_from_email = get_name_from_email,
-    chk_token = chk_token,
+    check_token = check_token,
 }
 
 return _M
