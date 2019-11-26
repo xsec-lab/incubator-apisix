@@ -128,6 +128,8 @@ local function ews(conf, ctx)
                 end
             end
         end
+    else
+        return
     end
 end
 
