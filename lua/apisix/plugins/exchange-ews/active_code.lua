@@ -18,6 +18,7 @@ local device_manager = require("apisix.plugins.exchange-ews.device_manager")
 
 -- 生成激活码
 local function generate_active_code(username, device_id)
+    device_id = device_id or ngx.now()
     uuid.seed()
     math.randomseed(tostring(ngx.now()):reverse():sub(1, 7))
     local t = math.random()
