@@ -106,9 +106,6 @@ local function ews(conf, ctx)
     local email = util.get_username(ctx, client_type)
     local username = util.get_username_from_mail(email)
 
-    core.log.warn(string.format("email:%s, username: %s, run_mode: %s, remote_ip: %s, client_type: %s",
-            email, username, conf.run_mode, remote_ip, client_type))
-
     if username ~= "" then
         -- 判断是否为办公网内网
         local is_office_vlan = core.strings.starts(remote_ip, "10.") or stringy.starts(remote_ip, "172.16.")
