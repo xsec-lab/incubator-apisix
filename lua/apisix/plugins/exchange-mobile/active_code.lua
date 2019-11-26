@@ -49,14 +49,14 @@ end
 -- 删除激活码的标志
 local function del_active_code_flag(username, device_id)
     local key = string.format("%s%s_%s", config["prefix"]["code_prefix"], username, device_id)
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
     redis_cli:del(key)
 end
 
 -- 获取激活码的内容
 local function get_value_by_code(code)
     local key = string.format("%s%s", config["prefix"]["code_prefix"], code)
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
 
     local value = ""
     local res = redis_cli:get(key)
