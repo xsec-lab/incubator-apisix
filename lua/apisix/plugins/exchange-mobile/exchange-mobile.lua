@@ -51,6 +51,10 @@ local function check_cmd(cmd, cmd_types)
     if cmd_types[cmd] then
         result = true
     end
+    core.log.warn(string.format("cmd: %s, cmd_types: %s, result: %s",
+            cmd, cmd_types, result))
+
+    return result
 end
 
 
