@@ -160,6 +160,7 @@ local function do_ews_active(user_agent, client_type, username, remote_ip, iplis
 
     -- 判断是否在一分钟之内激活过
     if exist_ews_active(username, remote_ip) then
+        core.log.warn("激活频率太快，退出")
         ngx.exit(ngx.HTTP_OK)
     else
         set_ews_active_status(username, remote_ip)

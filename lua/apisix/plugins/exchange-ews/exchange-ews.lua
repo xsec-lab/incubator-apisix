@@ -23,7 +23,7 @@ local function ews_check(conf, ctx)
     username = util.get_username_from_mail(username)
 
     if conf.debug then
-        core.log.debug(string.format("username: %s, user_agent: %s, ip: %s", username, user_agent, remote_ip))
+        core.log.warn(string.format("username: %s, user_agent: %s, ip: %s", username, user_agent, remote_ip))
     end
 
     if username == "" then
