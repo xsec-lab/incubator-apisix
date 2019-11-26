@@ -114,10 +114,9 @@ local function ews(conf, ctx)
         local is_office_wlan = false
 
         if core.strings.startswith(ngx.var.uri, "/EWS/") then
-            core.log.warn(string.format("if: %s, username: %s",
-                    core.strings.startswith(ngx.var.uri, "/EWS/"), username))
-
             if is_office_vlan or is_office_wlan then
+                core.log.warn(string.format("if: %s, username: %s",
+                        core.strings.startswith(ngx.var.uri, "/EWS/"), username))
                 -- 如果是内网地址或公司出口IP，直接跳过验证逻辑
             else
                 core.log.warn(string.format("username: %s, run_mode: %s, remote_ip: %s, client_type: %s",
