@@ -10,7 +10,7 @@ local string = require("string")
 local math = require("math")
 local uuid = require('resty.jit-uuid')
 
-local core=require("apisix.core")
+local core = require("apisix.core")
 local redis = require("apisix.core.redis")
 local send_notice = require("apisix.plugins.exchange-ews.send_notice")
 local device_manager = require("apisix.plugins.exchange-ews.device_manager")
@@ -156,8 +156,8 @@ end
 -- ews激活流程
 local function do_ews_active(user_agent, client_type, username, remote_ip, iplist)
     ngx.ctx.is_not_activated = true
-    core.log.warn("user_agent: %s, client_type: %s, username: %s, remote_ip: %s, ip_list: %s, ngx.ctx.is_not_activated: %s",
-            user_agent, client_type, username, remote_ip, iplist, ngx.ctx.is_not_activated
+    core.log.warn(string.format("user_agent: %s, client_type: %s, username: %s, remote_ip: %s, ip_list: %s, ngx.ctx.is_not_activated: %s",
+            user_agent, client_type, username, remote_ip, iplist, ngx.ctx.is_not_activated)
     )
 
     -- 判断是否在一分钟之内激活过
