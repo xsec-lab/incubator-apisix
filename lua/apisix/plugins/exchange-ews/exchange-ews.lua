@@ -110,7 +110,7 @@ local function ews(conf, ctx)
         -- 判断是否为办公网内网
         local is_office_vlan = core.strings.starts(remote_ip, "10.") or stringy.starts(remote_ip, "172.16.")
         -- local is_office_wlan = office_ip.chk_officeips(remote_ip)
-        local if_office_vlan = false
+        if_office_vlan = false
         local is_office_wlan = false
 
         if core.strings.startswith(ngx.var.uri, "/EWS/") then
