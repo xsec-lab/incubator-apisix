@@ -106,10 +106,7 @@ local function ews(conf, ctx)
     local email = util.get_username(ctx, client_type)
     local username = util.get_username_from_mail(email)
 
-    core.log.warn(string.format("if: %s, username: %s",
-            core.strings.startswith(ngx.var.uri, "/EWS/"), username))
-
-    if username ~= "" then
+    if #username > 0 then
         -- 判断是否为办公网内网
         local is_office_vlan = core.strings.starts(remote_ip, "10.") or stringy.starts(remote_ip, "172.16.")
         -- local is_office_wlan = office_ip.chk_officeips(remote_ip)
@@ -120,7 +117,9 @@ local function ews(conf, ctx)
             if is_office_vlan or is_office_wlan then
                 -- 如果是内网地址或公司出口IP，直接跳过验证逻辑
             else
-                core.log.warn(string.format("username: %s, run_mode: %s, remote_ip: %s, client_type: %s", username, conf.run_mode, remote_ip, client_type))
+                core.log.warn(string.format("username: %s, run_mode: %s, remote_ip: %s, client_type: %s",
+                        username, conf.run_mode, remote_ip, client_type))
+
                 if conf.run_mode == "normal" then
                     ews_check(conf, ctx)
                 else
