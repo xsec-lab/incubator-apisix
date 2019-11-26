@@ -115,7 +115,7 @@ end
 -- 激活码保存到redis中，有效期为8小时，多次生成的话，只有最后一次的有效
 local function set_active_code(username, ip, user_agent, iplist)
 
-    local code = generate_active_code()
+    local code = generate_active_code(username, user_agent)
 
     -- 判断是否进行了激活操作
     local has, code1 = exist_active_code_flag(username, ip)
