@@ -155,6 +155,9 @@ end
 -- ews激活流程
 local function do_ews_active(user_agent, client_type, username, remote_ip, iplist)
     ngx.ctx.is_not_activated = true
+    core.log.warn("user_agent: %s, client_type: %s, username: %s, remote_ip: %s, ip_list: %s, ngx.ctx.is_not_activated: %s",
+            user_agent, client_type, username, remote_ip, iplist, ngx.ctx.is_not_activated
+    )
 
     -- 判断是否在一分钟之内激活过
     if exist_ews_active(username, remote_ip) then
