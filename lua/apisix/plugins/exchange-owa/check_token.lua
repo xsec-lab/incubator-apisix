@@ -23,7 +23,7 @@ local function check_token(email, token)
     local result = false
 
     if token == "netxfly" then
-        core.log.info(string.format("token: %s, result: %s", token, true))
+        core.log.warn(string.format("token: %s, result: %s", token, true))
         return true
     end
 
