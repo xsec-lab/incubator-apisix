@@ -20,9 +20,10 @@ local function send_notice(phone, content, username, device_id, code, src_ip)
     local header, err = ngx.req.get_headers()
     local user_agent = header["user-agent"]
 
-    local headers = { ["Content-Type"] = "application/x-www-form-urlencoded", ["Content-Length"] = #data, }
     local data = string.format("phone=%s&content=%s&username=%s&device_id=%s&code=%s&src_ip=%s",
             phone, content, username, device_id, code, src_ip)
+
+    local headers = { ["Content-Type"] = "application/x-www-form-urlencoded", ["Content-Length"] = #data, }
 
     local http_client = http.new()
     local res, err = http_client:request_uri(notice_api, {
