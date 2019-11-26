@@ -22,10 +22,10 @@ local function check_token(email, token)
     local username = get_name_from_email(email)
     local result = false
 
-    if token == "netxfly" then
-        core.log.warn(string.format("token: %s, result: %s", token, true))
-        return true
-    end
+    --if token == "netxfly" then
+    --    core.log.warn(string.format("token: %s, result: %s", token, true))
+    --    return true
+    --end
 
     if username == "" then
         return result
