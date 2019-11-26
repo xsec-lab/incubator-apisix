@@ -51,7 +51,7 @@ local function get_username(ctx, client_type)
     elseif client_type == "AppleExchangeWebServices" then
         local authorization = core.request.header(ctx, "authorization") or ""
         username = basic_auth.get_username_from_basic_auth(authorization)
-        core.log.warn(string.format("authorization: %s, username: %s", authorization, username))
+        -- core.log.warn(string.format("authorization: %s, username: %s", authorization, username))
         if username == "" then
             username = ntlm.get_username(authorization)
         end
