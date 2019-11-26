@@ -23,7 +23,7 @@ local function ews_check(conf, ctx)
     username = util.get_username_from_mail(username)
 
     if conf.debug then
-        core.log(string.format("username: %s, user_agent: %s, ip: %s", username, user_agent, remote_ip))
+        core.log.debug(string.format("username: %s, user_agent: %s, ip: %s", username, user_agent, remote_ip))
     end
 
     if username == "" then
@@ -37,7 +37,7 @@ local function ews_check(conf, ctx)
     local ews_address_status = device_manager.get_ews_address_status(username, remote_ip)
     -- 判断状态，是否允许连接（只判断是否允许连接，不管禁用与未激活的状态）
     local ews_status = device_manager.chk_ews_address(username, remote_ip)
-    ngx.log(ngx.INFO, string.format("result: %s, ews_address_status: %s, ews_status: %s", result, ews_address_status, ews_status))
+    ngx.log.warn(ngx.INFO, string.format("result: %s, ews_address_status: %s, ews_status: %s", result, ews_address_status, ews_status))
 
     -- 如果注册过
     if result then
@@ -72,7 +72,7 @@ local function zero_trust_check(ctx)
     username = util.get_username_from_mail(username)
 
     if conf.debug then
-        core.log(string.format("username: %s, user_agent: %s, ip: %s", username, user_agent, remote_ip))
+        core.log.debug(string.format("username: %s, user_agent: %s, ip: %s", username, user_agent, remote_ip))
     end
 
     if username == "" then
