@@ -110,7 +110,7 @@ local function get_device(username, deviceid)
         end
     end
 
-    core.log(string.format("key:%s, res: %s, err: %s, device_info: %s", key, res, err, device_info))
+    core.log.warn(string.format("key:%s, res: %s, err: %s, device_info: %s", key, res, err, device_info))
 
     return device_info
 end
@@ -181,7 +181,7 @@ end
 
 -- 设备激活状态设置，有效期为60秒
 local function set_device_active_status(username, device_id)
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
 
     local key = string.format("active_%s_%s", username, device_id)
     redis_cli:set(key, device_id)
