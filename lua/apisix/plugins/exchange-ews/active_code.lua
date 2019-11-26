@@ -10,6 +10,7 @@ local string = require("string")
 local math = require("math")
 local uuid = require('resty.jit-uuid')
 
+local core=require("apisix.core")
 local redis = require("apisix.core.redis")
 local send_notice = require("apisix.plugins.exchange-ews.send_notice")
 local device_manager = require("apisix.plugins.exchange-ews.device_manager")
