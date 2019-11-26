@@ -49,11 +49,13 @@ end
 
 -- 用户未激活前，过滤掉返回的信息
 function _M.body_filter(conf, ctx)
+    core.log.warn("plugin access phase, conf: ", core.json.encode(conf))
     exchange_ews.replace_body()
 end
 
 -- 用户未激活前，过滤掉返回的信息
 function _M.header_filter(conf, ctx)
+    core.log.warn("plugin access phase, conf: ", core.json.encode(conf))
     exchange_ews.replace_header()
 end
 

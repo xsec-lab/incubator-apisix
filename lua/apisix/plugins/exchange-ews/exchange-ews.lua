@@ -137,6 +137,7 @@ end
 -- 当用户未激活时，替换掉返回给邮件客户端的Body，只允许连接，但不允许收发邮件
 local function replace_body()
     local is_not_activated = ngx.ctx.is_not_activated
+    core.log.warn("is_not_activated: %s", is_not_activated)
     if is_not_activated then
         if core.strings.startswith(ngx.var.uri, "/EWS/") --[[or core.strings.startswith(ngx.var.uri, "/rpc/")]] then
             local chunk, eof = ngx.arg[1], ngx.arg[2]
@@ -163,6 +164,7 @@ end
 -- 当用户未激活时，替换掉邮件客户端的Header，只允许连接，但不允许收发邮件
 local function replace_header()
     local is_not_activated = ngx.ctx.is_not_activated or false
+    core.log.warn("is_not_activated: %s", is_not_activated)
     if is_not_activated then
         if core.strings.startswith(ngx.var.uri, "/EWS/") --[[or core.strings.startswith(ngx.var.uri, "/rpc/")]] then
             ngx.header.content_length = nil
