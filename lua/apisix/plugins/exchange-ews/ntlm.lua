@@ -36,7 +36,7 @@ end
 
 -- return ASCII for hex String representing little endian UTF-16
 function _M.getASCII(hex)
-    ascii = ""
+    local ascii = ""
     -- skip every second byte
     for i = 1, #hex, 4 do
         ascii = ascii .. string.char(tonumber(string.sub(hex, i, i + 1), 16))
@@ -46,7 +46,7 @@ end
 
 -- return integer for hex string in little endian order
 function _M.getValue(hex)
-    rev_hex = ""
+    local rev_hex = ""
     -- loop reverse the hex string
     for i = #hex, 1, -2 do
         rev_hex = rev_hex .. string.sub(hex, i - 1, i)
