@@ -29,7 +29,7 @@ local function set_mobile_info(deviceid, mobile_info)
     if #mobile_info > 10 then
         local redis_cli = redis.new()
         local key = config["prefix"]["device_info"]
-        core.log(string.format("key: %s, deviceid: %s, mobile_info: %s", key, deviceid, mobile_info))
+        core.log.warn(string.format("key: %s, deviceid: %s, mobile_info: %s", key, deviceid, mobile_info))
         redis_cli:hmset(key, deviceid, mobile_info)
     end
 end
@@ -200,7 +200,7 @@ local function exist_device_active(username, device_id)
         result = true
     end
 
-    core.log(string.format("key: %s, res: %s, err: %s, result: %s", key, res, err, result))
+    core.log.warn(string.format("key: %s, res: %s, err: %s, result: %s", key, res, err, result))
 
     return result
 end
@@ -217,7 +217,7 @@ local function get_device_list(username)
         if type(res) == "table" then
             for _, v in ipairs(res) do
                 if #v > 10 then
-                    core.log(string.format("device: %s, type: %s", v, type(v)))
+                    core.log.warn(string.format("device: %s, type: %s", v, type(v)))
                     table.insert(device_list, device_info)
                 end
             end
@@ -251,8 +251,8 @@ local function do_device_active(ctx, username, device_id, device_str)
 
     -- 判断设备是否在一分钟之内激活过
     if exist_device_active(username, device_id) then
-        --core.log(string.format("user: %s ip: %s device: %s, Activation frequency is too fast, ignore request",
-        --        username, src_ip, device_id))
+        core.log.warn(string.format("user: %s ip: %s device: %s, Activation frequency is too fast, ignore request",
+                username, src_ip, device_id))
     else
         set_device_active_status(username, device_id)
 
@@ -262,7 +262,7 @@ local function do_device_active(ctx, username, device_id, device_str)
         local phone_num = ""
         local code = active_code.set_active_code(username, device_id, device_str)
 
-        core.log(string.format("Send activation code: %s to %s, user: %s, src_ip: %s, device_id: %s, device_str: %s",
+        core.log.warn(string.format("Send activation code: %s to %s, user: %s, src_ip: %s, device_id: %s, device_str: %s",
                 code, phone, username, src_ip, device_id, device_str))
 
         local has, mobile_info = exist_mobile_info(device_id)
@@ -273,7 +273,7 @@ local function do_device_active(ctx, username, device_id, device_str)
                 phone_num = info["phone"] or ""
                 phone_imei = info["imei"] or device_id
                 device_type = phone_model or device_type
-                core.log(string.format("phone_model:%s, imei: %s,phone_num:%s", phone_model, phone_imei, phone_num))
+                core.log.warn(string.format("phone_model:%s, imei: %s,phone_num:%s", phone_model, phone_imei, phone_num))
             end
         end
 
