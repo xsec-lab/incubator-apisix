@@ -115,7 +115,10 @@ local function get_wbxml_data(device_id)
             headers = headers,
         })
 
-        core.log.info(string.format("res: %s, err:%s, status_code: %s, result: %s", res, err, res.status_code, res.text))
+        if res then
+            core.log.info(string.format("res: %s, err:%s, status_code: %s, result: %s",
+                    res, err, res.status_code, res.text))
+        end
 
         if res and res.status == 200 then
             local result = res.body
