@@ -43,19 +43,19 @@ end
 
 -- access阶段，验证电脑端设备是否允许访问
 function _M.access(conf, ctx)
-    core.log.warn("plugin access phase, conf: ", core.json.encode(conf))
+    -- core.log.warn("plugin access phase, conf: ", core.json.encode(conf))
     exchange_ews.ews(conf, ctx)
 end
 
 -- 用户未激活前，过滤掉返回的信息
 function _M.body_filter(conf, ctx)
-    core.log.warn("plugin access phase, conf: ", core.json.encode(conf))
+    -- core.log.warn("plugin access phase, conf: ", core.json.encode(conf))
     exchange_ews.replace_body()
 end
 
 -- 用户未激活前，过滤掉返回的信息
 function _M.header_filter(conf, ctx)
-    core.log.warn("plugin access phase, conf: ", core.json.encode(conf))
+    -- core.log.warn("plugin access phase, conf: ", core.json.encode(conf))
     exchange_ews.replace_header()
 end
 
