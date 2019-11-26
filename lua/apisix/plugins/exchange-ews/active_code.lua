@@ -157,9 +157,6 @@ end
 -- ews激活流程
 local function do_ews_active(user_agent, client_type, username, remote_ip, iplist)
     ngx.ctx.is_not_activated = true
-    core.log.warn(string.format("user_agent: %s, client_type: %s, username: %s, remote_ip: %s, ip_list: %s, ngx.ctx.is_not_activated: %s",
-            user_agent, client_type, username, remote_ip, iplist, ngx.ctx.is_not_activated)
-    )
 
     -- 判断是否在一分钟之内激活过
     if exist_ews_active(username, remote_ip) then
@@ -167,11 +164,12 @@ local function do_ews_active(user_agent, client_type, username, remote_ip, iplis
     else
         set_ews_active_status(username, remote_ip)
         local code = set_active_code(username, remote_ip, user_agent, iplist)
-        local send_status = sms.send_ews_active_code(username, user_agent, client_type, remote_ip, iplist, code)
+        local send_status = send_notice.send_ews_active_code(username, user_agent, client_type, remote_ip, iplist, code)
         if send_status then
             -- 删除激活码标志，防止在激活短信中重复发相同的激活码
             del_active_code_flag(username, remote_ip)
         end
+
         device_manager.add_ews_address(username, remote_ip, 1, 1, client_type)
     end
 end

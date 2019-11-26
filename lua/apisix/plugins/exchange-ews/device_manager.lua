@@ -15,7 +15,7 @@ local redis = require("apisix.core.redis")
 -- state=0 表示激活，state=1 表示未激活，state=-1 表示禁用
 local function add_ews_address(username, ip, ews_type, state, client_type)
     local key = string.format("%s%s", config.prefix.ews_prefix, username)
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
     local now = ngx.now() * 1000
     local expire_time = now + 3600 * 72 * 1000
     local value = { state = state, time = now, expire_time = expire_time, ews_type = ews_type, client_type = client_type }
