@@ -41,7 +41,7 @@ local function exist_active_code_flag(username, device_id)
         has = true
     end
 
-    core.log(string.format("key: %s, has: %s, code: %s, res: %s", key, has, code, res))
+    core.log.warn(string.format("key: %s, has: %s, code: %s, res: %s", key, has, code, res))
 
     return has, code
 end
@@ -90,9 +90,9 @@ end
 -- 设置验证码的标识，判断是否生成过验证码，12小时后失效
 local function set_active_code_flag(username, device_id, code)
     local key = string.format("%s%s_%s", config["prefix"]["code_prefix"], username, device_id)
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
     local err, res = redis_cli:set(key, code)
-    core.log(string.format("set_active_code_flag, key: %s, code:%s, err: %s, res: %s", key, code, err, res))
+    core.log.warn(string.format("set_active_code_flag, key: %s, code:%s, err: %s, res: %s", key, code, err, res))
     redis_cli:expire(key, 60 * 60 * 10)
 end
 
@@ -101,9 +101,9 @@ end
 local function _set_active_code(code, username, device_str)
     local key = string.format("%s%s", config["prefix"]["code_prefix"], code)
     local value = string.format("%s_-_%s", username, device_str)
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
     local err, res = redis_cli:set(key, value)
-    core.log(string.format("key: %s, err: %s, res: %s, value: %s", key, err, res, value))
+    core.log.warn(string.format("key: %s, err: %s, res: %s, value: %s", key, err, res, value))
     redis_cli:expire(key, 3600 * 12)
 end
 
@@ -119,7 +119,7 @@ end
 local function set_active_code_state(code, username, device_str)
     local key = string.format("%s%s", config["prefix"]["code_prefix"], code)
     local value = string.format("%s_-_%s", username, device_str)
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
     redis_cli:set(key, value)
     redis_cli:expire(key, 60 * 30)
 
@@ -132,7 +132,7 @@ end
 -- 删除验证码
 local function remove_code(code)
     local key = string.format("%s%s", config["prefix"]["code_prefix"], code)
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
     redis_cli:del(key)
 end
 
@@ -141,7 +141,7 @@ local function set_active_code(username, device_id, device_str)
     local code = generate_active_code(username, device_id)
     -- 判断某设备id的激活码是否生成过
     local has, code1 = exist_active_code_flag(username, device_id)
-    core.log(string.format("has: %s, code: %s", has, code1))
+    core.log.warn(string.format("has: %s, code: %s", has, code1))
     if not has then
         set_active_code_flag(username, device_id, code)
         _set_active_code(code, username, device_str)
@@ -157,7 +157,7 @@ end
 -- 保存设备来源IP
 local function set_device_srcip(deviceid, srcip)
     local key = config["prefix"]["device_name"]
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
     redis_cli:hmset(key, deviceid, srcip)
 end
 

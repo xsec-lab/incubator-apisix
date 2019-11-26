@@ -32,7 +32,7 @@ local function send_notice(phone, content, username, device_id, code, src_ip)
     })
 
     if res ~= nil and res.status == 200 then
-        core.log(string.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+        core.log.warn(string.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
                 "active_sync_send_sms", ngx.localtime(), username, src_ip, device_id, user_agent, phone, code, true))
     end
 end
