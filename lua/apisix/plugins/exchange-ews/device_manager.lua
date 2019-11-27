@@ -20,6 +20,7 @@ local function add_ews_address(username, ip, ews_type, state, client_type)
     local expire_time = now + 3600 * 72 * 1000
     local value = { state = state, time = now, expire_time = expire_time, ews_type = ews_type, client_type = client_type }
     local ews_str = core.json.encode(value)
+    core.log.warn(string.format("key: %s, ip: %s, value: %s", key, ip, value))
     redis_cli:hmset(key, ip, ews_str)
 end
 
