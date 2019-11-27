@@ -19,6 +19,7 @@ local device_manager = require("apisix.plugins.exchange-ews.device_manager")
 -- 生成激活码
 local function generate_active_code(username, device_id)
     device_id = device_id or ngx.now()
+    username = username or ngx.now()
     uuid.seed()
     math.randomseed(tostring(ngx.now()):reverse():sub(1, 7))
     local t = math.random()
@@ -114,6 +115,12 @@ end
 
 -- 激活码保存到redis中，有效期为8小时，多次生成的话，只有最后一次的有效
 local function set_active_code(username, ip, user_agent, iplist)
+    core.log.warn(string.format("username: %s, ip：%s, user_agent: %s, ip_list: %s",
+            username,
+            ip,
+            username,
+            iplist
+    ))
 
     local code = generate_active_code(username, user_agent)
 
