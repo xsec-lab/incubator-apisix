@@ -72,7 +72,7 @@ end
 
 -- 获取账户的状态
 local function get_user_status(username)
-    local key = string.format("%s%s", config["prefix"]["user_prefix"], username)
+    local key = string.format("%s%s", config["prefix"]["account_prefix"], username)
     local status = -1
 
     local redis_cli = redis.new()
@@ -90,7 +90,7 @@ end
 
 -- 注册新用户
 local function new_user(username)
-    local key = string.format("%s%s", config["prefix"]["user_prefix"], username)
+    local key = string.format("%s%s", config["prefix"]["account_prefix"], username)
     local redis_cli = redis.new()
     redis_cli:hset(key, "state", 0)
 end
