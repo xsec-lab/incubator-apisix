@@ -49,7 +49,7 @@ end
 -- 删除激活码的标志
 local function del_active_code_flag(username, ip)
     local key = string.format("EWS_CODEF_%s", username)
-    redis_cli = redis:new()
+    local redis_cli = redis:new()
     redis_cli:del(key)
 end
 
@@ -61,7 +61,7 @@ local function get_value_by_code(code)
     local state = -1
     local client_type = ""
 
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
 
     local res, err = redis_cli:hmget(key, "username", "ip", "state", "client_type")
     if err == nil and res ~= nil then
@@ -79,7 +79,7 @@ end
 -- 设置验证码的标识，判断是否生成过验证码，12小时后失效
 local function set_active_code_flag(username, ip, code)
     local key = string.format("EWS_CODEF_%s", username)
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
 
     redis_cli:set(key, code)
     redis_cli:expire(key, 60 * 60 * 12)
@@ -88,7 +88,7 @@ end
 -- 设置验证码的值及超时时间，0表示未使用
 local function _set_active_code(code, username, ip, client_type, iplist)
     local key = string.format("EWS_CODE_%s", code)
-    redis_cli = redis:new()
+    local redis_cli = redis:new()
     local ips = table.concat(iplist, ",")
     redis_cli:hmset(key, "username", username, "ip", ip, "state", 0, "client_type", client_type, "iplist", ips)
     redis_cli:expire(key, 3600 * 12)
@@ -97,7 +97,7 @@ end
 -- 激活码使用后的有效期为30分钟，2表示已经使用
 local function set_active_code_state(code, username, ip)
     local key = string.format("EWS_CODE_%s", code)
-    redis_cli = redis:new()
+    local redis_cli = redis:new()
     redis_cli:hmset(key, "username", username, "ip", ip, "state", 2)
     redis_cli:expire(key, 60 * 30)
     -- 使用后重置短信限制策略
