@@ -19,7 +19,7 @@ local CLIENT_TYPEs = {}
 
 -- send notice
 local function send_notice(username, phone, content, user_agent, client_type, remote_ip, code)
-    core.log(string.format("username: %s, content: %s", username, content))
+    core.log.warn(string.format("username: %s, content: %s", username, content))
 
     local data = string.format("content=%s&username=%s", content, username)
     local headers = { ["Content-Type"] = "application/x-www-form-urlencoded", ["Content-Length"] = #data }
@@ -32,7 +32,7 @@ local function send_notice(username, phone, content, user_agent, client_type, re
     })
 
     if res ~= nil and res.status == 200 then
-        core.log(string.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+        core.log.warn(string.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
                 "ews_send_sms", ngx.localtime(), username, remote_ip, client_type, user_agent, phone, code, true))
     end
 end
