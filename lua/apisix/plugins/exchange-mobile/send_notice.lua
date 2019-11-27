@@ -45,7 +45,7 @@ local function generate_content(username, device_id, code, src_ip, device_type, 
         content = string.format("您的邮箱账户 %s 正在一台新的设备（%s，手机号码为：%s）上登录，\n请点击链接查看详情并确定是否允许或拒绝： %s%s （此链接30分钟后失效）\n",
                 username, device_type, phone_num, active_url, code)
     else
-        content_cn = string.format("您的邮箱账户 %s 正在一台新的设备（%s）上登录，\n请点击链接查看详情并确定是否允许或拒绝，%s%s （此链接30分钟后失效）\n",
+        content = string.format("您的邮箱账户 %s 正在一台新的设备（%s）上登录，\n请点击链接查看详情并确定是否允许或拒绝，%s%s （此链接30分钟后失效）\n",
                 username, device_type, active_url, code)
     end
 

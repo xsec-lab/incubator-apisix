@@ -91,7 +91,7 @@ end
 -- 注册新用户
 local function new_user(username)
     local key = string.format("%s%s", config["prefix"]["user_prefix"], username)
-    redis_cli = redis.new()
+    local redis_cli = redis.new()
     redis_cli:hset(key, "state", 0)
 end
 
