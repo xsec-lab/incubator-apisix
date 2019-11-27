@@ -32,7 +32,7 @@ local function get_client_type(ctx)
 end
 
 -- 在nginx的配置文件中调用
-local function get_client_type1()
+local function get_client_type_short()
     local headers = ngx.req.get_headers()
     local user_agent = headers["user-agent"]
     local table_ua = core.strings.split(user_agent, "/")
@@ -143,7 +143,7 @@ end
 local _M = {
     get_user_srcip = get_user_srcip,
     get_client_type = get_client_type,
-    get_client_type1 = get_client_type1,
+    get_client_type_short = get_client_type_short,
     get_username = get_username,
     get_username_from_mail = get_username_from_mail,
     check_crack = check_crack,
