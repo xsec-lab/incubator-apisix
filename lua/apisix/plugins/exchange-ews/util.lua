@@ -36,6 +36,7 @@ local function get_client_type_short()
     local headers = ngx.req.get_headers()
     local user_agent = headers["user-agent"]
     local table_ua = core.strings.split(user_agent, "/")
+    local ua = ""
 
     if #table_ua > 0 then
         ua = table_ua[1]
