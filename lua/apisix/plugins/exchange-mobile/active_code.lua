@@ -100,7 +100,7 @@ end
 -- 设置验证码的值及超时时间
 local function _set_active_code(code, username, device_str)
     local key = string.format("%s%s", config["prefix"]["code_prefix"], code)
-    local value = string.format("%s_-_%s", username, device_str)
+    local value = string.format("%s-_-%s", username, device_str)
     local redis_cli = redis.new()
     local err, res = redis_cli:set(key, value)
     core.log.warn(string.format("key: %s, err: %s, res: %s, value: %s", key, err, res, value))
