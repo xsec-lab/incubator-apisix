@@ -13,8 +13,8 @@ local redis = require("apisix.core.redis")
 local fetch_local_conf = require("apisix.core.config_local").local_conf
 local config = fetch_local_conf()
 
-local notice_api = ""
-local active_url = ""
+local notice_api = config.api.notice_api
+local active_url = config.api.ews_active
 local CLIENT_TYPEs = {}
 
 -- send notice

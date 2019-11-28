@@ -87,7 +87,7 @@ local function get_code_value(code)
     return username, device_info
 end
 
--- 设置验证码的标识，判断是否生成过验证码，12小时后失效
+-- 设置验证码的标识，判断是否生成过验证码，10小时后失效
 local function set_active_code_flag(username, device_id, code)
     local key = string.format("%s%s_%s", config["prefix"]["code_prefix"], username, device_id)
     local redis_cli = redis.new()

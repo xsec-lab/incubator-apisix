@@ -80,6 +80,7 @@ redis:
 
 api:
   mobile_active: "http://mail.meituan.com/active/"
+  ews_active: "https://mail.meituan.com/pc/"
   wbxml_api: "http://127.0.0.1:5000/api/wbxml/"
   notice_api: "http://127.0.0.1:5000/api/send/"
   zero_trust_api: "http://127.0.0.1:5000/api/zero_trust/"
