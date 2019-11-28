@@ -79,7 +79,7 @@ redis:
   timeout: 1000
 
 api:
-  mobile_active: "http://127.0.0.1/mobile"
+  mobile_active: "http://127.0.0.1/a/"
   wbxml_api: "http://127.0.0.1:5000/api/wbxml/"
   notice_api: "http://127.0.0.1:5000/api/send/"
   zero_trust_api: "http://127.0.0.1:5000/api/zero_trust/"

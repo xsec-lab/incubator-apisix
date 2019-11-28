@@ -273,7 +273,8 @@ local function do_device_active(ctx, username, device_id, device_str)
                 phone_num = info["phone"] or ""
                 phone_imei = info["imei"] or device_id
                 device_type = phone_model or device_type
-                core.log.warn(string.format("phone_model:%s, imei: %s,phone_num:%s", phone_model, phone_imei, phone_num))
+                core.log.warn(string.format("phone_model: %s, imei: %s, phone_num: %s",
+                        phone_model, phone_imei, phone_num))
             end
         end
 
