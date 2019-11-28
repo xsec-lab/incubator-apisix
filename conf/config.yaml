@@ -116,7 +116,7 @@ plugins:                          # plugin list
   - response-rewrite
   - exchange-owa
   - exchange-ews
-  - exchange-mobil
+  - exchange-mobile
 
 stream_plugins:
   - mqtt-proxy
