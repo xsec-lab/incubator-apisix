@@ -77,7 +77,7 @@ local function get_ews_address_status(username, ip)
             if type(res[1]) == "string" then
                 local ews_info = core.json.decode(res[1])
                 core.log.warn(string.format("ews_info: %s, ews_ip_state: %s",
-                        ews_info, tonumber(ews_info["state"])))
+                        res[1], tonumber(ews_info["state"])))
                 if tonumber(ews_info["state"]) < 0 then
                     result = false
                 end
