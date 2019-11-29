@@ -94,10 +94,42 @@ local function zero_trust_check(ctx)
         trust_info = core.json.decode(res.body)
     end
 
+    -- 测试数据，假设从信任引擎的消息管道中获取到的数据如下
+    trust_info = {
+        input = {
+            username = "netxfly",
+            remote_ip = "10.10.10.100",
+            ews_users = {
+                items = {
+                    {
+                        ipi = "10.10.10.100",
+                        user_agent = "Microsoft Office",
+                        score = 90,
+                        expire_time = 1569031859000
+                    },
+                    {
+                        ip = "10.10.10.11",
+                        user_agent = "AppleExchangeWebServices/802 ExchangeSync/117",
+                        score = 90,
+                        expire_time = 1569121859000
+                    },
+                    {
+                        ip = "10.10.10.12",
+                        user_agent = "MacOutlook/16.28.0.190812 (Intelx64 Mac OS X",
+                        score = 60,
+                        expire_time = 1569121859000
+                    }
+                }
+            }
+        }
+    }
+
+    -- 传到OPA中进行判断，是否允许连接邮箱服务器
+    -- 利用云原生基金会孵化的开源的策略引擎open policy agent，实现了一个简单的访问控制引擎
+    -- https://github.com/open-policy-agent/opa
     result = util.check_opa_policy(opa_url, trust_info)
 
     return result
-
 end
 
 local function ews(conf, ctx)
@@ -108,7 +140,7 @@ local function ews(conf, ctx)
 
     if #username > 0 then
         -- 判断是否为办公网内网
-        local is_office_vlan = core.strings.starts(remote_ip, "10.") or stringy.starts(remote_ip, "172.16.")
+        local is_office_vlan = core.strings.starts(remote_ip, "10.10.") or stringy.starts(remote_ip, "172.16.")
         -- local is_office_wlan = office_ip.chk_officeips(remote_ip)
         is_office_vlan = false
         local is_office_wlan = false

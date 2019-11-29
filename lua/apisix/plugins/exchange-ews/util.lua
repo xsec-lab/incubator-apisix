@@ -121,7 +121,6 @@ local function check_opa_policy(opa_url, user_info)
     local headers = { ["Content-Type"] = "application/json", ["Content-Length"] = #data }
     local trust_info = {}
 
-    http_client = http.new()
     local http_client = http.new()
     local res, err = http_client:request_uri(opa_url, {
         method = "POST",
