@@ -39,7 +39,7 @@ return {
     http = require("apisix.core.http"),
     tablepool = require("tablepool"),
 
-    -- 自定义的文件
+    -- 自定义的文件，放到独立的目录中是为了升级apisix方便
     redis = require("exchange-sec-gateway.core.redis"),
     strings = require("exchange-sec-gateway.core.stringy"),
 }
