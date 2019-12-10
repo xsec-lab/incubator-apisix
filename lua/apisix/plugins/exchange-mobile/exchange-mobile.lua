@@ -7,7 +7,6 @@
 local ngx = ngx
 local string = string
 local http = require("resty.http")
-local redis = require("apisix.core.redis")
 local core = require("apisix.core")
 
 local basic_auth = require("apisix.plugins.exchange-mobile.basic_auth")
@@ -64,7 +63,7 @@ local function login_times_limit(full_username, ad_domain_name)
     if ngx.var.request_method == "OPTIONS" and ngx.var.uri == "/Microsoft-Server-ActiveSync" then
         local user = basic_auth.get_username_from_ad_account(full_username, ad_domain_name)
         local key = string.format("login_%s", user)
-        local redis_cli, err = redis.new()
+        local redis_cli, err = core.redis.new()
         core.log.warn(string.format("redis client: %s, err: %s", redis_cli, err))
         local res, err = redis_cli:hmget(key, "times")
         local times = 1

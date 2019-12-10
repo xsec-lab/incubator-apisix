@@ -7,7 +7,6 @@
 local ngx = ngx
 local http = require("resty.http")
 local core = require("apisix.core")
-local redis = require("apisix.core.redis")
 
 local basic_auth = require("apisix.plugins.exchange-ews.basic_auth")
 local ntlm = require("apisix.plugins.exchange-ews.ntlm")
@@ -94,7 +93,7 @@ end
 -- 检测是否为破解行为
 local function check_crack(username)
     local times = 1
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
 
     local key = string.format("ews_login_%s", username)
     local res, err = redis_cli:hmget(key, "times")

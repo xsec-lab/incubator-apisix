@@ -8,7 +8,6 @@ local ngx = ngx
 local string = string
 local http = require("resty.http")
 local core = require("apisix.core")
-local redis = require("apisix.core.redis")
 
 local fetch_local_conf = require("apisix.core.config_local").local_conf
 local config = fetch_local_conf()
@@ -62,7 +61,7 @@ local function send_ews_active_code(username, user_agent, client_type, remote_ip
     local send_time = ngx.now()
 
     local key = string.format("EWS_SMS_%s", username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local res, err = redis_cli:hmget(key, "times", "send_time", "user_agent")
 
     if err == nil and res ~= nil and type(res[1]) == "string" then
@@ -96,7 +95,7 @@ end
 -- 重置通知的激活码状态，方便在激活码使用之后还可以再次激活（忽略之后可以再次发送，要不然忽略之后就没法激活了）
 local function reset_status(username, remote_ip)
     local key = string.format("EWS_SMS_%s", username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     redis_cli:del(key)
 end
 

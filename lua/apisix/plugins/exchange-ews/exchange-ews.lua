@@ -1,5 +1,3 @@
----
-
 local ngx = ngx
 local string = string
 local core = require("apisix.core")

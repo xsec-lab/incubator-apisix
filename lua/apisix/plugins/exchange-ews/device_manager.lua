@@ -8,14 +8,13 @@ local fetch_local_conf = require("apisix.core.config_local").local_conf
 local config = fetch_local_conf()
 
 local core = require("apisix.core")
-local redis = require("apisix.core.redis")
 
 -- 添加EWS地址
 -- ews_type =0表示自动加入，ews_type=1，表示手动激活加入
 -- state=0 表示激活，state=1 表示未激活，state=-1 表示禁用
 local function add_ews_address(username, ip, ews_type, state, client_type)
     local key = string.format("%s%s", config.prefix.ews_prefix, username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local now = ngx.now() * 1000
     local expire_time = now + 3600 * 72 * 1000
     local value = { state = state, time = now, expire_time = expire_time, ews_type = ews_type, client_type = client_type }
@@ -32,7 +31,7 @@ local function update_ews_address(username, ip, ews_type, state, client_type)
     local value = { state = state, time = now, expire_time = expire_time, ews_type = ews_type, client_type = client_type }
     local ews_str = core.json.encode(value)
 
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     redis_cli:hmset(key, ip, ews_str)
 end
 
@@ -41,7 +40,7 @@ local function get_ews_address(username, ip)
     local ews_str = ""
     local result = false
     local key = string.format("%s%s", config.prefix.ews_prefix, username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local res, err = redis_cli:hmget(key, ip)
     if err == nil and res ~= nil then
         if type(res[1]) == "string" then
@@ -60,7 +59,7 @@ local function disable_ews_address(username, ip)
         local ews_info = core.json.decode(ews_str)
         ews_info["state"] = -1
         local value = core.json.encode(ews_info)
-        local redis_cli = redis.new()
+        local redis_cli = core.redis.new()
         redis_cli:hmset(key, ip, value)
         -- redis_cli:expire(key, 3600 * 8)
     end
@@ -70,7 +69,7 @@ end
 local function get_ews_address_status(username, ip)
     local result = true
     local key = string.format("%s%s", config.prefix.ews_prefix, username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local res, err = redis_cli:hmget(key, ip)
     if err == nil and res ~= nil then
         if next(res) then
@@ -91,7 +90,7 @@ end
 local function chk_ews_address(username, ip)
     local result = false
     local key = string.format("%s%s", config.prefix.ews_prefix, username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local res, err = redis_cli:hmget(key, ip)
     if err == nil and res ~= nil then
         if next(res) then
@@ -110,7 +109,7 @@ end
 local function exist_ews_address(username)
     local result = false
     local key = string.format("%s%s", config.prefix.ews_prefix, username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local res, err = redis_cli:hvals(key)
     if err == nil and res ~= nil then
         result = true
@@ -123,7 +122,7 @@ end
 local function get_ews_iplist(username)
     local iplist = {}
     local key = string.format("%s%s", config.prefix.ews_prefix, username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local res, err = redis_cli:hkeys(key)
     if err == nil and res ~= nil and type(res) == "table" then
         -- core.log(string.format("key: %s, res: %s, value: %s", key, res, table.concat(res, ",")))
@@ -138,7 +137,7 @@ end
 -- 刷新IP白名单，清除过期的IP地址
 local function refresh_ews_address(username)
     local key = string.format("%s%s", config["PREFIX"]["EWS_PRIFIX"], username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local iplist = get_ews_iplist(username)
     local now = ngx.now() * 1000
     for _, ip in pairs(iplist) do
@@ -174,7 +173,7 @@ end
 -- 删除某个用户的EWS白名单
 local function remove_ews_address(username, ip)
     local key = string.format("%s%s", config.prefix.ews_prefix, username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     redis_cli:hdel(key, ip)
 end
 

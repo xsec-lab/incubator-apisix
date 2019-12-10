@@ -11,7 +11,6 @@ local math = require("math")
 local uuid = require('resty.jit-uuid')
 
 local core = require("apisix.core")
-local redis = require("apisix.core.redis")
 local send_notice = require("apisix.plugins.exchange-ews.send_notice")
 local device_manager = require("apisix.plugins.exchange-ews.device_manager")
 
@@ -35,7 +34,7 @@ local function exist_active_code_flag(username, ip)
     local has = false
     local code = ""
 
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local res = redis_cli:get(key)
 
     if res ~= nil and type(res) == "string" then
@@ -49,7 +48,7 @@ end
 -- 删除激活码的标志
 local function del_active_code_flag(username, ip)
     local key = string.format("EWS_CODEF_%s", username)
-    local redis_cli = redis:new()
+    local redis_cli = core.redis.new()
     redis_cli:del(key)
 end
 
@@ -61,7 +60,7 @@ local function get_value_by_code(code)
     local state = -1
     local client_type = ""
 
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
 
     local res, err = redis_cli:hmget(key, "username", "ip", "state", "client_type")
     if err == nil and res ~= nil then
@@ -79,7 +78,7 @@ end
 -- 设置验证码的标识，判断是否生成过验证码，12小时后失效
 local function set_active_code_flag(username, ip, code)
     local key = string.format("EWS_CODEF_%s", username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
 
     redis_cli:set(key, code)
     redis_cli:expire(key, 60 * 60 * 12)
@@ -88,7 +87,7 @@ end
 -- 设置验证码的值及超时时间，0表示未使用
 local function _set_active_code(code, username, ip, client_type, iplist)
     local key = string.format("EWS_CODE_%s", code)
-    local redis_cli = redis:new()
+    local redis_cli = core.redis.new()
     local ips = table.concat(iplist, ",")
     redis_cli:hmset(key, "username", username, "ip", ip, "state", 0, "client_type", client_type, "iplist", ips)
     redis_cli:expire(key, 3600 * 12)
@@ -97,7 +96,7 @@ end
 -- 激活码使用后的有效期为30分钟，2表示已经使用
 local function set_active_code_state(code, username, ip)
     local key = string.format("EWS_CODE_%s", code)
-    local redis_cli = redis:new()
+    local redis_cli = core.redis.new()
     redis_cli:hmset(key, "username", username, "ip", ip, "state", 2)
     redis_cli:expire(key, 60 * 30)
     -- 使用后重置短信限制策略
@@ -108,7 +107,7 @@ end
 -- 删除验证码
 local function remove_code(code)
     local key = string.format("EWS_CODE_%s", code)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     redis_cli:del(key)
 end
 
@@ -141,14 +140,14 @@ end
 local function set_ews_active_status(username, remote_ip)
     local key = string.format("ews_active_%s", username)
 
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     redis_cli:set(key, remote_ip)
     redis_cli:expire(key, 60)
 end
 
 -- 判断设备是否处于1分钟内激活过
 local function exist_ews_active(username, remote_ip)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
 
     local result = false
     local key = string.format("ews_active_%s", username)

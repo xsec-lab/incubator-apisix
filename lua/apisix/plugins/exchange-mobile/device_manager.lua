@@ -6,8 +6,6 @@
 
 local core = require("apisix.core")
 
-local redis = require("apisix.core.redis")
-
 local util = require("apisix.plugins.exchange-mobile.util")
 local active_code = require("apisix.plugins.exchange-mobile.active_code")
 local send_notice = require("apisix.plugins.exchange-mobile.send_notice")
@@ -27,7 +25,7 @@ local STATE = {
 local function set_mobile_info(deviceid, mobile_info)
     -- 判断长度，防止插入空数据
     if #mobile_info > 10 then
-        local redis_cli = redis.new()
+        local redis_cli = core.redis.new()
         local key = config["prefix"]["device_info"]
         core.log.warn(string.format("key: %s, deviceid: %s, mobile_info: %s", key, deviceid, mobile_info))
         redis_cli:hmset(key, deviceid, mobile_info)
@@ -38,7 +36,7 @@ end
 local function exist_mobile_info(deviceid)
     local has = false
     local mobile_info = ""
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
 
     local key = config["prefix"]["device_info"]
 
@@ -56,14 +54,14 @@ end
 
 -- 在特定的账户下新建用户
 local function new_device(username, deviceid, device_info)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local key = string.format("%s%s", config["prefix"]["user_prefix"], username)
     redis_cli:hmset(key, deviceid, device_info)
 end
 
 -- 删除设备及相关的信息
 local function remove_device(username, deviceid)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     -- 删除账户下设备ID对应的信息
     redis_cli:del(string.format("%s%s", config["prefix"]["user_prefix"], username), deviceid)
     -- 删除某个设备下的用户信息
@@ -75,7 +73,7 @@ local function get_user_status(username)
     local key = string.format("%s%s", config["prefix"]["account_prefix"], username)
     local status = -1
 
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local res, err = redis_cli:hmget(key, "state")
     if err == nil and res ~= nil then
         if #res > 0 then
@@ -91,7 +89,7 @@ end
 -- 注册新用户
 local function new_user(username)
     local key = string.format("%s%s", config["prefix"]["account_prefix"], username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     redis_cli:hset(key, "state", 0)
 end
 
@@ -99,7 +97,7 @@ end
 local function get_device(username, deviceid)
     local key = string.format("%s%s", config["prefix"]["user_prefix"], username)
     local device_info = ""
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
 
     local res, err = redis_cli:hmget(key, deviceid)
     if err == nil and res ~= nil then
@@ -145,7 +143,7 @@ local function set_device_status(username, deviceid, state)
 
     local key = string.format("%s%s", config["prefix"]["user_prefix"], username)
 
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     redis_cli:hset(key, deviceid, device_str)
 end
 
@@ -154,7 +152,7 @@ local function add_user_to_devicelist(username, device_id)
     local key = string.format("%s%s", config["prefix"]["device_prefix"], device_id)
     local now = ngx.localtime()
 
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     redis_cli:hset(key, username, now)
 end
 
@@ -181,7 +179,7 @@ end
 
 -- 设备激活状态设置，有效期为60秒
 local function set_device_active_status(username, device_id)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
 
     local key = string.format("active_%s_%s", username, device_id)
     redis_cli:set(key, device_id)
@@ -190,7 +188,7 @@ end
 
 -- 判断设备是否处于1分钟内激活过
 local function exist_device_active(username, device_id)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
 
     local result = false
     local key = string.format("active_%s_%s", username, device_id)
@@ -207,7 +205,7 @@ end
 
 -- 通过username获取设备列表
 local function get_device_list(username)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
 
     local device_list = {}
     local key = string.format("%s%s", config["prefix"]["user_prefix"], username)
@@ -229,7 +227,7 @@ end
 
 -- 通过设备ID获取用户列表
 local function get_user_list(device_id)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
 
     local user_list = {}
     local key = string.format("%s%s", config["prefix"]["device_prefix"], device_id)

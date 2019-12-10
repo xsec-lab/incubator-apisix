@@ -28,8 +28,6 @@ local function auth_otp_token(mail_server)
     end
 end
 
-
-
 -- 显示登录页面时，替换原始的form，增加动态口令输入框
 local function add_otp_token_form()
     if ngx.var.uri == "/owa/auth/logon.aspx" and ngx.var.request_method == "GET" then

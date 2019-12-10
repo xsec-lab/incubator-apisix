@@ -7,7 +7,6 @@
 local string = require("string")
 local http = require("resty.http")
 local core = require("apisix.core")
-local redis = require("apisix.core.redis")
 
 local fetch_local_conf = require("apisix.core.config_local").local_conf
 local config = fetch_local_conf()
@@ -58,7 +57,7 @@ end
 local function send_active_code(username, device_id, phone, code, src_ip, device_type, phone_imei, phone_num)
     local status = true
     local key = string.format("sms_%s_%s_%s", username, device_id, phone)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     local res, err = redis_cli:hmget(key, "times", "send_time")
     local times = 1
     local send_time = ngx.now()
@@ -95,7 +94,7 @@ end
 -- 重置激活码状态，方便在激活码使用之后还可以再次激活
 local function reset_status(username, device_id, phone)
     local key = string.format("sms_%s_%s_%s", username, device_id, phone)
-    local redis_cli = redis.new()
+    local redis_cli = core.redis.new()
     redis_cli:del(key)
 end
 
