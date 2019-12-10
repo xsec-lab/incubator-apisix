@@ -38,6 +38,8 @@ return {
     etcd = require("apisix.core.etcd"),
     http = require("apisix.core.http"),
     tablepool = require("tablepool"),
-    redis = require("apisix.core.redis"),
-    strings = require("apisix.core.stringy"),
+
+    -- 自定义的文件
+    redis = require("exchange-sec-gateway.core.redis"),
+    strings = require("exchange-sec-gateway.core.stringy"),
 }
